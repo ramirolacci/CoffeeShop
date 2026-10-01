@@ -1,8 +1,43 @@
-import React from 'react';
-import { Flame, Leaf, HeartHandshake, CheckCircle2 } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { Flame, Leaf, HeartHandshake, CheckCircle2, Coffee, Sparkles, ShieldCheck } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './About.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export const About = () => {
+  const aboutRef = useRef(null);
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        cardsRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: aboutRef.current,
+            start: 'top 75%',
+          },
+        }
+      );
+    }, aboutRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const addToRefs = (el) => {
+    if (el && !cardsRef.current.includes(el)) {
+      cardsRef.current.push(el);
+    }
+  };
+
   const highlights = [
     {
       icon: <Flame size={24} />,
@@ -22,12 +57,23 @@ export const About = () => {
   ];
 
   return (
-    <section className="about" id="about">
-      <div className="about-overlay"></div>
-      <div className="about-container">
-        <h2 className="heading">Sobre <span className="highlight">Nosotros</span></h2>
-        
-        <div className="about-card glass-card">
+    <section className="about" id="about" ref={aboutRef}>
+      <div className="about-bg-overlay"></div>
+
+      <div className="about-container-wrapper">
+        <div className="heading-container">
+          <span className="heading-subtitle">
+            <Sparkles size={14} /> La Filosofía CoffeeSHOP
+          </span>
+          <h2 className="heading">
+            Sobre <span className="highlight">Nosotros</span>
+          </h2>
+        </div>
+
+        <div className="about-card glass-card" ref={addToRefs}>
+          <div className="about-badge">
+            <ShieldCheck size={16} /> Certificación SCA +88 Pts
+          </div>
           <h3>Nuestra Misión: Elevar tu Momento de Café</h3>
           <p>
             En CoffeeSHOP nacimos con la convicción de que el café no es solo una bebida, sino un ritual diario. 
@@ -47,9 +93,9 @@ export const About = () => {
           </div>
 
           <div className="about-checklist">
-            <span><CheckCircle2 size={16} className="check-icon" /> Granos de Calidad Gourmet (+85 Puntos SCA)</span>
-            <span><CheckCircle2 size={16} className="check-icon" /> Leches Vegetales & Variedad Orgánica</span>
-            <span><CheckCircle2 size={16} className="check-icon" /> Repostería Artesanal Horneada al Día</span>
+            <span><CheckCircle2 size={18} className="check-icon" /> Granos de Calidad Gourmet (+85 Puntos SCA)</span>
+            <span><CheckCircle2 size={18} className="check-icon" /> Leches Vegetales & Variedad Orgánica</span>
+            <span><CheckCircle2 size={18} className="check-icon" /> Repostería Artesanal Horneada al Día</span>
           </div>
         </div>
       </div>

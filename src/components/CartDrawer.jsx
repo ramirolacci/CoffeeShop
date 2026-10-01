@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, CheckCircle, Sparkles } from 'lucide-react';
+import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, CheckCircle, Sparkles, CreditCard } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useCart } from '../context/CartContext';
 import './CartDrawer.css';
@@ -33,20 +33,20 @@ export const CartDrawer = () => {
     e.preventDefault();
     setOrderCompleted(true);
 
-    // Trigger celebration confetti
     try {
       confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 120,
+        spread: 80,
         origin: { y: 0.6 },
+        colors: ['#e4b381', '#d69e62', '#ffffff', '#fbbf24']
       });
     } catch (err) {
-      console.log('Confetti effect triggered');
+      console.log('Confetti effect');
     }
 
     setTimeout(() => {
       clearCart();
-    }, 1000);
+    }, 1200);
   };
 
   const closeAll = () => {
@@ -58,15 +58,15 @@ export const CartDrawer = () => {
   return (
     <>
       <div className="cart-backdrop" onClick={closeCart}>
-        <div className="cart-drawer" onClick={(e) => e.stopPropagation()}>
+        <div className="cart-drawer glass-card" onClick={(e) => e.stopPropagation()}>
           <div className="cart-header">
             <div className="cart-title">
               <ShoppingBag size={22} className="cart-icon" />
-              <h3>Tu Carrito</h3>
+              <h3>Tu Carrito Barista</h3>
               <span className="cart-count">({cart.length})</span>
             </div>
             <button className="cart-close-btn" onClick={closeCart} aria-label="Cerrar carrito">
-              <X size={24} />
+              <X size={22} />
             </button>
           </div>
 
@@ -75,9 +75,9 @@ export const CartDrawer = () => {
               <div className="empty-cart">
                 <ShoppingBag size={64} className="empty-icon" />
                 <h4>Tu carrito está vacío</h4>
-                <p>Explora nuestro menú y añade tus cafés preferidos.</p>
+                <p>Explora nuestras especialidades y elige tu café favorito.</p>
                 <button className="btn-primary" onClick={closeCart}>
-                  Explorar Cafés
+                  Ver Menú de Cafés
                 </button>
               </div>
             ) : (
@@ -85,11 +85,19 @@ export const CartDrawer = () => {
                 {cart.map((item) => (
                   <div key={item.id} className="cart-item">
                     <img src={item.image} alt={item.name} className="cart-item-img" />
-                    
+
                     <div className="cart-item-details">
                       <h4>{item.name}</h4>
-                      <span className="cart-item-price">${(item.price * item.quantity).toFixed(2)}</span>
                       
+                      {item.customOptions && (item.customOptions.size || item.customOptions.milk) && (
+                        <div className="cart-custom-specs">
+                          {item.customOptions.size && <span>{item.customOptions.size}</span>}
+                          {item.customOptions.milk && <span>• {item.customOptions.milk}</span>}
+                        </div>
+                      )}
+
+                      <span className="cart-item-price">${(item.price * item.quantity).toFixed(2)}</span>
+
                       <div className="cart-item-controls">
                         <div className="qty-buttons">
                           <button
@@ -159,13 +167,13 @@ export const CartDrawer = () => {
         <div className="modal-backdrop" onClick={closeAll}>
           <div className="checkout-modal glass-card" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-btn" onClick={() => setIsCheckoutModalOpen(false)}>
-              <X size={24} />
+              <X size={22} />
             </button>
 
             {!orderCompleted ? (
               <form onSubmit={handleCheckoutSubmit} className="checkout-form">
                 <h3>Finalizar Pedido ☕</h3>
-                <p className="checkout-subtitle">Ingresa tus datos para recibir tu orden recién hecha.</p>
+                <p className="checkout-subtitle">Completa tus datos para recibir tu café de especialidad recien hecho.</p>
 
                 <div className="form-group">
                   <label>Nombre Completo</label>
@@ -213,7 +221,7 @@ export const CartDrawer = () => {
                 </div>
 
                 <div className="checkout-order-summary">
-                  <span>Total a Pagar: <strong>${grandTotal.toFixed(2)}</strong></span>
+                  <span>Total Final: <strong>${grandTotal.toFixed(2)}</strong></span>
                 </div>
 
                 <button type="submit" className="btn-primary submit-checkout-btn">
@@ -226,13 +234,13 @@ export const CartDrawer = () => {
                   <CheckCircle size={64} className="success-icon" />
                   <Sparkles size={32} className="sparkle-icon" />
                 </div>
-                <h2>¡Pedido Confirmado con Éxito! 🎉</h2>
+                <h2>¡Pedido Confirmado! 🎉</h2>
                 <p>
-                  Gracias por tu compra, <strong>{checkoutForm.name || 'Cliente'}</strong>. 
-                  Tus cafés están siendo preparados por nuestro maestro barista y estarán en camino a tu dirección en 20-30 minutos.
+                  Muchas gracias por tu compra, <strong>{checkoutForm.name || 'Cliente'}</strong>. 
+                  Tu orden está en preparación por nuestro barista certificado y estará en tu puerta en 20-30 minutos.
                 </p>
                 <div className="order-number-badge">
-                  Código de Orden: #{Math.floor(100000 + Math.random() * 900000)}
+                  Código de Rastreo: #{Math.floor(100000 + Math.random() * 900000)}
                 </div>
                 <button className="btn-primary" onClick={closeAll}>
                   Volver a la Tienda
