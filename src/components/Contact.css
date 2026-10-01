@@ -89,7 +89,7 @@
 }
 
 .contact-form input,
-.contact-form textarea {
+.contact-auto-expand-textarea {
   width: 100%;
   padding: 1.4rem 1.8rem;
   background: rgba(255, 255, 255, 0.03);
@@ -101,19 +101,29 @@
   transition: all var(--transition-fast);
 }
 
-.contact-form textarea {
+.contact-auto-expand-textarea {
   margin-bottom: 2.5rem;
+  resize: none;
+  overflow-y: hidden;
+  min-height: 110px;
+  line-height: 1.6;
 }
 
 .contact-form input:focus,
-.contact-form textarea:focus {
+.contact-auto-expand-textarea:focus {
   border-color: var(--accent-gold);
   box-shadow: 0 0 15px rgba(228, 179, 129, 0.2);
 }
 
+.contact-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .form-submit-btn {
-  width: 100%;
-  padding: 1.5rem;
+  width: auto;
+  padding: 1.4rem 3.4rem;
+  font-size: 1.5rem;
 }
 
 .form-success-box {

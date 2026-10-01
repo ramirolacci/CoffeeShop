@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Star, MessageSquarePlus, UserCheck, X, Sparkles, Quote, Upload, Camera } from 'lucide-react';
+import { Star, MessageSquarePlus, UserCheck, X, Sparkles, Quote, Upload, Camera, ChevronDown } from 'lucide-react';
 import { INITIAL_REVIEWS } from '../data/coffeesData';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -11,6 +11,7 @@ export const Reviews = () => {
   const [reviewsList, setReviewsList] = useState(INITIAL_REVIEWS);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [isRatingDropdownOpen, setIsRatingDropdownOpen] = useState(false);
   const [newReview, setNewReview] = useState({
     name: '',
     rating: 5,
@@ -21,6 +22,13 @@ export const Reviews = () => {
   const gridRef = useRef(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
+  const ratingDropdownRef = useRef(null);
+
+  const ratingOptions = [
+    { value: 5, label: '⭐⭐⭐⭐⭐ (5/5) Excelente' },
+    { value: 4, label: '⭐⭐⭐⭐ (4/5) Muy Bueno' },
+    { value: 3, label: '⭐⭐⭐ (3/5) Aceptable' },
+  ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -44,6 +52,17 @@ export const Reviews = () => {
     }, reviewsRef);
 
     return () => ctx.revert();
+  }, []);
+
+  // Close rating dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ratingDropdownRef.current && !ratingDropdownRef.current.contains(e.target)) {
+        setIsRatingDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleAvatarFileChange = (e) => {
@@ -81,6 +100,8 @@ export const Reviews = () => {
     e.target.style.height = 'auto';
     e.target.style.height = `${e.target.scrollHeight}px`;
   };
+
+  const currentRatingLabel = ratingOptions.find(r => r.value === Number(newReview.rating))?.label || ratingOptions[0].label;
 
   return (
     <section className="reviews" id="reviews" ref={reviewsRef}>
@@ -183,7 +204,9 @@ export const Reviews = () => {
               </div>
 
               <div className="form-group">
-                <label>Tu Nombre *</label>
+                <label>
+                  Tu Nombre <span className="required-star">*</span>
+                </label>
                 <input
                   type="text"
                   required
@@ -194,20 +217,43 @@ export const Reviews = () => {
               </div>
 
               <div className="form-group">
-                <label>Calificación *</label>
-                <select
-                  required
-                  value={newReview.rating}
-                  onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })}
-                >
-                  <option value={5}>⭐⭐⭐⭐⭐ (5/5) Excelente</option>
-                  <option value={4}>⭐⭐⭐⭐ (4/5) Muy Bueno</option>
-                  <option value={3}>⭐⭐⭐ (3/5) Aceptable</option>
-                </select>
+                <label>
+                  Calificación <span className="required-star">*</span>
+                </label>
+                
+                {/* Custom Styled Rating Select Dropdown */}
+                <div className="custom-rating-dropdown" ref={ratingDropdownRef}>
+                  <div
+                    className="rating-trigger-field"
+                    onClick={() => setIsRatingDropdownOpen(!isRatingDropdownOpen)}
+                  >
+                    <span>{currentRatingLabel}</span>
+                    <ChevronDown size={16} className={`arrow-icon ${isRatingDropdownOpen ? 'open' : ''}`} />
+                  </div>
+
+                  {isRatingDropdownOpen && (
+                    <div className="rating-menu-dropdown animate-fade-in">
+                      {ratingOptions.map((opt) => (
+                        <div
+                          key={opt.value}
+                          className={`rating-menu-item ${Number(newReview.rating) === opt.value ? 'selected' : ''}`}
+                          onClick={() => {
+                            setNewReview({ ...newReview, rating: opt.value });
+                            setIsRatingDropdownOpen(false);
+                          }}
+                        >
+                          {opt.label}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="form-group">
-                <label>Tu Comentario *</label>
+                <label>
+                  Tu Comentario <span className="required-star">*</span>
+                </label>
                 <textarea
                   ref={textareaRef}
                   rows={3}

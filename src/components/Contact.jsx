@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Send, MapPin, Phone, Mail, Clock, CheckCircle, Sparkles, ChevronDown } from 'lucide-react';
 import { FAQS_DATA } from '../data/coffeesData';
 import './Contact.css';
@@ -15,6 +15,8 @@ export const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
+  const messageTextareaRef = useRef(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -22,6 +24,12 @@ export const Contact = () => {
       setSubmitted(false);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     }, 4500);
+  };
+
+  const handleMessageInput = (e) => {
+    setFormData({ ...formData, message: e.target.value });
+    e.target.style.height = 'auto';
+    e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
   const toggleFaq = (idx) => {
@@ -120,17 +128,21 @@ export const Contact = () => {
               </div>
 
               <textarea
-                rows={5}
+                ref={messageTextareaRef}
+                rows={4}
                 required
                 placeholder="Escribe tu mensaje aquí..."
                 value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                onInput={handleMessageInput}
+                className="contact-auto-expand-textarea"
               ></textarea>
 
-              <button type="submit" className="btn-primary form-submit-btn">
-                <Send size={18} />
-                Enviar Mensaje
-              </button>
+              <div className="contact-form-actions">
+                <button type="submit" className="btn-primary form-submit-btn">
+                  <Send size={18} />
+                  Enviar Mensaje
+                </button>
+              </div>
             </form>
           )}
         </div>

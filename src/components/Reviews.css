@@ -236,8 +236,13 @@
   font-weight: 600;
 }
 
+.required-star {
+  color: #ef4444;
+  font-weight: 700;
+  margin-left: 0.3rem;
+}
+
 .form-group input,
-.form-group select,
 .auto-expand-textarea {
   width: 100%;
   padding: 1.3rem 1.6rem;
@@ -250,22 +255,75 @@
   transition: all var(--transition-fast);
 }
 
-.form-group select option {
-  background: #0b0b0d;
-  color: var(--text-main);
-}
-
 .form-group input::placeholder,
 .auto-expand-textarea::placeholder {
   color: var(--text-dim);
 }
 
 .form-group input:focus,
-.form-group select:focus,
+.rating-trigger-field:focus,
 .auto-expand-textarea:focus {
   border-color: var(--accent-gold);
   box-shadow: 0 0 15px rgba(228, 179, 129, 0.25);
   background: rgba(255, 255, 255, 0.06);
+}
+
+/* Custom Rating Dropdown */
+.custom-rating-dropdown {
+  position: relative;
+  width: 100%;
+  user-select: none;
+}
+
+.rating-trigger-field {
+  width: 100%;
+  padding: 1.3rem 1.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-size: 1.4rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.rating-trigger-field:hover {
+  border-color: var(--border-gold);
+}
+
+.rating-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: rgba(16, 16, 24, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(228, 179, 129, 0.15);
+  z-index: 300;
+  overflow: hidden;
+  padding: 0.6rem 0;
+}
+
+.rating-menu-item {
+  padding: 1.2rem 1.8rem;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.rating-menu-item:hover,
+.rating-menu-item.selected {
+  background: rgba(228, 179, 129, 0.15);
+  color: var(--accent-gold);
+  font-weight: 600;
 }
 
 /* Auto Expanding Textarea */

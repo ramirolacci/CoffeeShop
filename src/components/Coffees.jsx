@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ShoppingBag, Eye, Star, Coffee as CoffeeIcon, Sparkles, ArrowUpDown } from 'lucide-react';
+import { Search, ShoppingBag, Eye, Star, Coffee as CoffeeIcon, Sparkles, ArrowUpDown, ChevronDown } from 'lucide-react';
 import { COFFEES_DATA } from '../data/coffeesData';
 import { useCart } from '../context/CartContext';
 import { CoffeeModal } from './CoffeeModal';
@@ -13,12 +13,32 @@ export const Coffees = () => {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('default');
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [activeModalCoffee, setActiveModalCoffee] = useState(null);
   const { addToCart } = useCart();
 
   const gridRef = useRef(null);
+  const sortRef = useRef(null);
 
   const categories = ['Todos', 'Espresso', 'Especialidad', 'Fríos', 'Repostería'];
+
+  const sortOptions = [
+    { value: 'default', label: 'Orden Recomendado' },
+    { value: 'price-low', label: 'Precio: Menor a Mayor' },
+    { value: 'price-high', label: 'Precio: Mayor a Menor' },
+    { value: 'rating', label: 'Mejor Calificados' },
+  ];
+
+  // Close custom dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (sortRef.current && !sortRef.current.contains(e.target)) {
+        setIsSortOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const filteredCoffees = COFFEES_DATA.filter((coffee) => {
     const matchesCategory =
@@ -51,6 +71,8 @@ export const Coffees = () => {
       );
     }
   }, [selectedCategory, searchQuery, sortBy]);
+
+  const currentSortLabel = sortOptions.find(o => o.value === sortBy)?.label || 'Orden Recomendado';
 
   return (
     <section className="coffees" id="coffees">
@@ -86,14 +108,34 @@ export const Coffees = () => {
           ))}
         </div>
 
-        <div className="sort-selector glass-card">
-          <ArrowUpDown size={16} className="sort-icon" />
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="default">Orden Recomendado</option>
-            <option value="price-low">Precio: Menor a Mayor</option>
-            <option value="price-high">Precio: Mayor a Menor</option>
-            <option value="rating">Mejor Calificados</option>
-          </select>
+        {/* Custom Luxury Dropdown for Sort */}
+        <div className="custom-sort-dropdown" ref={sortRef}>
+          <button
+            type="button"
+            className="sort-trigger-btn"
+            onClick={() => setIsSortOpen(!isSortOpen)}
+          >
+            <ArrowUpDown size={16} className="sort-icon" />
+            <span>{currentSortLabel}</span>
+            <ChevronDown size={14} className={`arrow-icon ${isSortOpen ? 'open' : ''}`} />
+          </button>
+
+          {isSortOpen && (
+            <div className="sort-menu-dropdown animate-fade-in">
+              {sortOptions.map((option) => (
+                <div
+                  key={option.value}
+                  className={`sort-menu-item ${sortBy === option.value ? 'selected' : ''}`}
+                  onClick={() => {
+                    setSortBy(option.value);
+                    setIsSortOpen(false);
+                  }}
+                >
+                  {option.label}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
