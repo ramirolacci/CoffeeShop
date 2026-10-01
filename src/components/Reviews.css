@@ -22,12 +22,12 @@
   max-width: 1300px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2.5rem;
 }
 
 .review-card {
-  padding: 3rem;
+  padding: 2.8rem 2.4rem;
   background: linear-gradient(150deg, rgba(22, 22, 32, 0.7) 0%, rgba(12, 12, 18, 0.85) 100%);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
@@ -60,7 +60,7 @@
 }
 
 .review-text {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   color: var(--text-muted);
   line-height: 1.65;
   margin-bottom: 2.5rem;
@@ -73,31 +73,48 @@
   gap: 1.4rem;
   margin-top: auto;
   margin-bottom: 1.5rem;
+  width: 100%;
 }
 
 .reviewer-avatar {
   width: 48px;
   height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  max-width: 48px;
+  max-height: 48px;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--border-gold);
+  flex-shrink: 0;
 }
 
-.reviewer-profile h4 {
-  font-size: 1.6rem;
+.reviewer-text-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.reviewer-name {
+  font-size: 1.55rem;
   color: var(--text-main);
   line-height: 1.2;
-}
-
-.reviewer-role {
-  font-size: 1.25rem;
-  color: var(--accent-gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
 }
 
 .review-date {
-  margin-left: auto;
   font-size: 1.15rem;
   color: var(--text-dim);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
+  align-self: center;
 }
 
 .verified-tag {
@@ -110,14 +127,15 @@
   border-top: 1px solid var(--border-glass);
 }
 
-/* Modal */
+/* Modal Styling */
 .add-review-modal {
-  max-width: 500px;
+  max-width: 520px;
   width: 100%;
   padding: 3.5rem;
   background: rgba(14, 14, 20, 0.98);
   border: 1px solid var(--border-gold);
   position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(228, 179, 129, 0.15);
 }
 
 .add-review-modal h3 {
@@ -129,6 +147,80 @@
   font-size: 1.4rem;
   color: var(--text-muted);
   margin-bottom: 2.5rem;
+}
+
+/* Avatar Upload Optional */
+.avatar-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  margin-bottom: 2.2rem;
+  padding: 1.2rem 1.6rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border-glass);
+  border-radius: var(--radius-sm);
+}
+
+.avatar-preview-wrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(228, 179, 129, 0.1);
+  border: 2px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.avatar-preview-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.avatar-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder-upload {
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-upload-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.upload-label {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.upload-btn {
+  background: transparent;
+  border: none;
+  color: var(--accent-gold);
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.upload-btn:hover {
+  color: var(--text-main);
 }
 
 .form-group {
@@ -146,28 +238,52 @@
 
 .form-group input,
 .form-group select,
-.form-group textarea {
-  padding: 1.2rem 1.6rem;
+.auto-expand-textarea {
+  width: 100%;
+  padding: 1.3rem 1.6rem;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-sm);
   color: var(--text-main);
   font-size: 1.4rem;
   outline: none;
+  transition: all var(--transition-fast);
 }
 
 .form-group select option {
   background: #0b0b0d;
+  color: var(--text-main);
+}
+
+.form-group input::placeholder,
+.auto-expand-textarea::placeholder {
+  color: var(--text-dim);
 }
 
 .form-group input:focus,
 .form-group select:focus,
-.form-group textarea:focus {
+.auto-expand-textarea:focus {
   border-color: var(--accent-gold);
+  box-shadow: 0 0 15px rgba(228, 179, 129, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Auto Expanding Textarea */
+.auto-expand-textarea {
+  resize: none;
+  overflow-y: hidden;
+  min-height: 90px;
+  line-height: 1.6;
+}
+
+.form-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
 }
 
 .submit-review-btn {
-  width: 100%;
-  padding: 1.4rem;
-  margin-top: 1rem;
+  width: auto;
+  padding: 1.2rem 3rem;
+  font-size: 1.4rem;
 }

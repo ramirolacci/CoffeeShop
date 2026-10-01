@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Star, MessageSquarePlus, UserCheck, X, Sparkles, Quote } from 'lucide-react';
+import { Star, MessageSquarePlus, UserCheck, X, Sparkles, Quote, Upload, Camera } from 'lucide-react';
 import { INITIAL_REVIEWS } from '../data/coffeesData';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,15 +10,17 @@ gsap.registerPlugin(ScrollTrigger);
 export const Reviews = () => {
   const [reviewsList, setReviewsList] = useState(INITIAL_REVIEWS);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const [newReview, setNewReview] = useState({
     name: '',
-    role: 'Cliente Frecuente',
     rating: 5,
     comment: '',
   });
 
   const reviewsRef = useRef(null);
   const gridRef = useRef(null);
+  const textareaRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -44,23 +46,40 @@ export const Reviews = () => {
     return () => ctx.revert();
   }, []);
 
+  const handleAvatarFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAddReviewSubmit = (e) => {
     e.preventDefault();
-    if (!newReview.name || !newReview.comment) return;
+    if (!newReview.name || !newReview.comment || !newReview.rating) return;
 
     const createdReview = {
       id: Date.now(),
       name: newReview.name,
-      role: newReview.role,
       rating: Number(newReview.rating),
       date: 'Justo ahora',
       comment: newReview.comment,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+      avatar: avatarPreview || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
     };
 
     setReviewsList([createdReview, ...reviewsList]);
     setIsAddModalOpen(false);
-    setNewReview({ name: '', role: 'Cliente Frecuente', rating: 5, comment: '' });
+    setNewReview({ name: '', rating: 5, comment: '' });
+    setAvatarPreview(null);
+  };
+
+  const handleCommentInput = (e) => {
+    setNewReview({ ...newReview, comment: e.target.value });
+    e.target.style.height = 'auto';
+    e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
   return (
@@ -104,9 +123,8 @@ export const Reviews = () => {
 
             <div className="reviewer-profile">
               <img src={review.avatar} alt={review.name} className="reviewer-avatar" />
-              <div>
-                <h4>{review.name}</h4>
-                <p className="reviewer-role">{review.role}</p>
+              <div className="reviewer-text-col">
+                <h4 className="reviewer-name">{review.name}</h4>
               </div>
               <span className="review-date">{review.date}</span>
             </div>
@@ -130,20 +148,55 @@ export const Reviews = () => {
             <p className="modal-subtitle">Comparte tu opinión sobre nuestros granos y servicio barista.</p>
 
             <form onSubmit={handleAddReviewSubmit}>
+              {/* Optional Profile Picture */}
+              <div className="avatar-upload-container">
+                <div
+                  className="avatar-preview-wrapper"
+                  onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                  title="Cargar foto de perfil opcional"
+                >
+                  {avatarPreview ? (
+                    <img src={avatarPreview} alt="Vista previa" className="avatar-preview-img" />
+                  ) : (
+                    <div className="avatar-placeholder-upload">
+                      <Camera size={20} />
+                    </div>
+                  )}
+                </div>
+                <div className="avatar-upload-info">
+                  <span className="upload-label">Foto de perfil (Opcional)</span>
+                  <button
+                    type="button"
+                    className="upload-btn"
+                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                  >
+                    <Upload size={14} /> Seleccionar Imagen
+                  </button>
+                </div>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  onChange={handleAvatarFileChange}
+                  style={{ display: 'none' }}
+                />
+              </div>
+
               <div className="form-group">
-                <label>Tu Nombre</label>
+                <label>Tu Nombre *</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ej. Ana Lucía"
+                  placeholder="Ingresa tu nombre"
                   value={newReview.name}
                   onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
                 />
               </div>
 
               <div className="form-group">
-                <label>Calificación</label>
+                <label>Calificación *</label>
                 <select
+                  required
                   value={newReview.rating}
                   onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })}
                 >
@@ -154,19 +207,23 @@ export const Reviews = () => {
               </div>
 
               <div className="form-group">
-                <label>Tu Comentario</label>
+                <label>Tu Comentario *</label>
                 <textarea
-                  rows={4}
+                  ref={textareaRef}
+                  rows={3}
                   required
                   placeholder="Detalla tu experiencia..."
                   value={newReview.comment}
-                  onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                  onInput={handleCommentInput}
+                  className="auto-expand-textarea"
                 ></textarea>
               </div>
 
-              <button type="submit" className="btn-primary submit-review-btn">
-                Publicar Reseña
-              </button>
+              <div className="form-actions-row">
+                <button type="submit" className="btn-primary submit-review-btn">
+                  Publicar Reseña
+                </button>
+              </div>
             </form>
           </div>
         </div>
