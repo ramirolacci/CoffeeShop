@@ -80,8 +80,8 @@ export const COFFEES_DATA = [
     origin: 'Valle Central, Costa Rica',
     process: 'Honey Dorado',
     roastLevel: 'Tueste Medio',
-    description: 'Leche texturizada manchada suavemente con espresso espresso de origen, coronada con hilos artesanales de caramelo salado de la casa.',
-    image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=800&q=80',
+    description: 'Leche texturizada manchada suavemente con espresso de origen, coronada con hilos artesanales de caramelo salado de la casa.',
+    image: '/imgcoffee/coffee4.png',
     badge: 'Favorito Dulce',
     tastingNotes: ['Caramelo Salado', 'Vainilla', 'Crema Batida'],
     sizes: [
@@ -104,7 +104,7 @@ export const COFFEES_DATA = [
     process: 'Sombreado & Molido en Piedra',
     roastLevel: 'Verde Ceremonial',
     description: 'Matcha japonés de primer brote, batido tradicionalmente con chasen de bambú y servido helado sobre leche vegetal cremosa.',
-    image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=800&q=80',
+    image: '/imgcoffee/coffee5.png',
     badge: 'Superfood',
     tastingNotes: ['Té Verde Fresco', 'Umami Suave', 'Leche de Almendras'],
     sizes: [
@@ -127,7 +127,7 @@ export const COFFEES_DATA = [
     process: 'Lavado Orgánico',
     roastLevel: 'Tueste Medio',
     description: 'Doble ristretto concentrado fundido con una fina capa de leche microvaporizada sin espuma gruesa. Sabor a café denso y sedoso.',
-    image: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=800&q=80',
+    image: '/imgcoffee/coffee6.png',
     badge: 'Intenso & Sedoso',
     tastingNotes: ['Flor de Azahar', 'Chocolate de Leche', 'Ciruela'],
     sizes: [
@@ -148,7 +148,7 @@ export const COFFEES_DATA = [
     process: 'Laminado 72 Horas',
     roastLevel: 'Dorado Crujiente',
     description: 'Hojaldre 100% mantequilla de Normandía, relleno de crema frangipane de almendras y decorado con láminas tostadas y azúcar impalpable.',
-    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80',
+    image: '/imgcoffee/coffee7.png',
     badge: 'Horneo Diario',
     tastingNotes: ['Mantequilla', 'Frangipane', 'Almendra Tostada']
   },
@@ -165,8 +165,8 @@ export const COFFEES_DATA = [
     origin: 'Espresso Huila & Gelato Italiano',
     process: 'Extracción Caliente sobre Helado',
     roastLevel: 'Tueste Espresso',
-    description: 'Una bola de helado artesanal de fior di latte o vainilla bañado al momento con un espresso caliente reciñen extraído.',
-    image: 'https://images.unsplash.com/photo-1592321675774-3de57f36f407?auto=format&fit=crop&w=800&q=80',
+    description: 'Una bola de helado artesanal de fior di latte o vainilla bañado al momento con un espresso caliente recién extraído.',
+    image: '/imgcoffee/coffee8.png',
     badge: 'Postre Barista',
     tastingNotes: ['Espresso Caliente', 'Helado Cremoso', 'Contraste Térmico']
   }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ShoppingBag, Eye, Star, Coffee as CoffeeIcon, Sparkles, ArrowUpDown, Shield } from 'lucide-react';
+import { Search, ShoppingBag, Eye, Star, Coffee as CoffeeIcon, Sparkles, ArrowUpDown } from 'lucide-react';
 import { COFFEES_DATA } from '../data/coffeesData';
 import { useCart } from '../context/CartContext';
 import { CoffeeModal } from './CoffeeModal';
@@ -107,15 +107,6 @@ export const Coffees = () => {
         <div className="coffees-grid" ref={gridRef}>
           {filteredCoffees.map((coffee) => (
             <div key={coffee.id} className="coffee-card glass-card">
-              <div className="card-badge-header">
-                <span className="badge-tag">{coffee.badge}</span>
-                {coffee.scaScore && (
-                  <span className="sca-score-tag">
-                    <Shield size={12} /> {coffee.scaScore}
-                  </span>
-                )}
-              </div>
-
               <div className="coffees-img-wrapper" onClick={() => setActiveModalCoffee(coffee)}>
                 <img src={coffee.image} alt={coffee.name} loading="lazy" />
                 <div className="card-overlay">

@@ -157,11 +157,12 @@
 }
 
 .coffees-img-wrapper img {
-  max-height: 180px;
-  max-width: 90%;
+  max-height: 185px;
+  max-width: 92%;
   object-fit: contain;
+  border-radius: var(--radius-sm);
   transition: transform var(--transition-normal);
-  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.7));
 }
 
 .coffee-card:hover .coffees-img-wrapper img {
