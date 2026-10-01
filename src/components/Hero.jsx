@@ -14,7 +14,9 @@ export const Hero = () => {
   const actionsRef = useRef(null);
   const statsRef = useRef(null);
 
+  const countOriginRef = useRef(null);
   const countClientsRef = useRef(null);
+  const countRatingRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -27,28 +29,62 @@ export const Hero = () => {
         .fromTo(actionsRef.current, { opacity: 0, x: 40 }, { opacity: 1, x: 0 }, '-=0.6')
         .fromTo(statsRef.current.children, { opacity: 0, y: 30, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, stagger: 0.15 }, '-=0.5');
 
-      // Animated counter number for clients
+      // Stat 1: Animated counter for 100% Granos de Origen
+      if (countOriginRef.current) {
+        gsap.fromTo(
+          countOriginRef.current,
+          { textContent: 0 },
+          {
+            textContent: 100,
+            duration: 2.2,
+            delay: 0.4,
+            ease: 'power2.out',
+            snap: { textContent: 1 },
+            onUpdate: function () {
+              if (countOriginRef.current) {
+                const val = Math.floor(this.targets()[0].textContent);
+                countOriginRef.current.innerText = `${val}%`;
+              }
+            },
+          }
+        );
+      }
+
+      // Stat 2: Animated counter for +15.000 Clientes Felices
       if (countClientsRef.current) {
         gsap.fromTo(
           countClientsRef.current,
           { textContent: 0 },
           {
             textContent: 15000,
-            duration: 2.2,
+            duration: 2.5,
+            delay: 0.5,
             ease: 'power2.out',
             snap: { textContent: 1 },
-            scrollTrigger: {
-              trigger: statsRef.current,
-              start: 'top 90%',
-            },
             onUpdate: function () {
               if (countClientsRef.current) {
                 const val = Math.floor(this.targets()[0].textContent);
-                countClientsRef.current.innerText = `+${val.toLocaleString()}`;
+                countClientsRef.current.innerText = `+${val.toLocaleString('es-AR')}`;
               }
             },
           }
         );
+      }
+
+      // Stat 3: Animated counter for 4.9 / 5.0 Calificación SCA
+      if (countRatingRef.current) {
+        const ratingObj = { val: 0 };
+        gsap.to(ratingObj, {
+          val: 4.9,
+          duration: 2.2,
+          delay: 0.6,
+          ease: 'power2.out',
+          onUpdate: () => {
+            if (countRatingRef.current) {
+              countRatingRef.current.innerText = `${ratingObj.val.toFixed(1)} / 5.0`;
+            }
+          },
+        });
       }
     }, heroRef);
 
@@ -107,7 +143,7 @@ export const Hero = () => {
             <div className="stat-card glass-card">
               <div className="stat-icon-wrapper"><Award size={22} /></div>
               <div>
-                <h4>100%</h4>
+                <h4 ref={countOriginRef}>0%</h4>
                 <p>Granos de Origen</p>
               </div>
             </div>
@@ -115,7 +151,7 @@ export const Hero = () => {
             <div className="stat-card glass-card">
               <div className="stat-icon-wrapper"><Users size={22} /></div>
               <div>
-                <h4 ref={countClientsRef}>+15,000</h4>
+                <h4 ref={countClientsRef}>+0</h4>
                 <p>Clientes Felices</p>
               </div>
             </div>
@@ -123,7 +159,7 @@ export const Hero = () => {
             <div className="stat-card glass-card">
               <div className="stat-icon-wrapper"><Star size={22} /></div>
               <div>
-                <h4>4.9 / 5.0</h4>
+                <h4 ref={countRatingRef}>0.0 / 5.0</h4>
                 <p>Calificación SCA</p>
               </div>
             </div>

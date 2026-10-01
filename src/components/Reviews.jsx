@@ -35,16 +35,19 @@ export const Reviews = () => {
       if (gridRef.current) {
         gsap.fromTo(
           gridRef.current.children,
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 60, scale: 0.95 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            scale: 1,
+            duration: 1.1,
             stagger: 0.15,
-            ease: 'power2.out',
+            delay: 0.2,
+            ease: 'power3.out',
             scrollTrigger: {
               trigger: reviewsRef.current,
               start: 'top 75%',
+              toggleActions: 'play none none reverse',
             },
           }
         );

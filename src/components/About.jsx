@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Flame, Leaf, HeartHandshake, CheckCircle2, Coffee, Sparkles, ShieldCheck } from 'lucide-react';
+import { Flame, Leaf, HeartHandshake, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './About.css';
@@ -8,22 +8,24 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const About = () => {
   const aboutRef = useRef(null);
-  const cardsRef = useRef([]);
+  const cardRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        cardsRef.current,
-        { opacity: 0, y: 50 },
+        cardRef.current,
+        { opacity: 0, y: 70, scale: 0.96 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: 'power2.out',
+          scale: 1,
+          duration: 1.2,
+          delay: 0.2,
+          ease: 'power3.out',
           scrollTrigger: {
             trigger: aboutRef.current,
             start: 'top 75%',
+            toggleActions: 'play none none reverse',
           },
         }
       );
@@ -31,12 +33,6 @@ export const About = () => {
 
     return () => ctx.revert();
   }, []);
-
-  const addToRefs = (el) => {
-    if (el && !cardsRef.current.includes(el)) {
-      cardsRef.current.push(el);
-    }
-  };
 
   const highlights = [
     {
@@ -70,7 +66,7 @@ export const About = () => {
           </h2>
         </div>
 
-        <div className="about-card glass-card" ref={addToRefs}>
+        <div className="about-card glass-card" ref={cardRef}>
           <div className="about-badge">
             <ShieldCheck size={16} /> Certificación SCA +88 Pts
           </div>

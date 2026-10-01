@@ -17,6 +17,7 @@ export const Coffees = () => {
   const [activeModalCoffee, setActiveModalCoffee] = useState(null);
   const { addToCart } = useCart();
 
+  const coffeesSectionRef = useRef(null);
   const gridRef = useRef(null);
   const sortRef = useRef(null);
 
@@ -55,27 +56,38 @@ export const Coffees = () => {
     return 0;
   });
 
+  // Staggered ScrollTrigger reveal for coffee cards grid with smooth delay
   useEffect(() => {
-    if (gridRef.current) {
-      gsap.fromTo(
-        gridRef.current.children,
-        { opacity: 0, y: 30, scale: 0.96 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: 'power2.out',
-        }
-      );
-    }
+    const ctx = gsap.context(() => {
+      if (gridRef.current && gridRef.current.children.length > 0) {
+        gsap.fromTo(
+          gridRef.current.children,
+          { opacity: 0, y: 60, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.0,
+            stagger: 0.12,
+            delay: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: coffeesSectionRef.current,
+              start: 'top 75%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      }
+    }, coffeesSectionRef);
+
+    return () => ctx.revert();
   }, [selectedCategory, searchQuery, sortBy]);
 
   const currentSortLabel = sortOptions.find(o => o.value === sortBy)?.label || 'Orden Recomendado';
 
   return (
-    <section className="coffees" id="coffees">
+    <section className="coffees" id="coffees" ref={coffeesSectionRef}>
       <div className="heading-container">
         <span className="heading-subtitle">
           <Sparkles size={14} /> Selección de la Casa

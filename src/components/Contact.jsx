@@ -1,7 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Send, MapPin, Phone, Mail, Clock, CheckCircle, Sparkles, ChevronDown } from 'lucide-react';
 import { FAQS_DATA } from '../data/coffeesData';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Contact.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +19,79 @@ export const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
+  const contactSectionRef = useRef(null);
+  const cardsColumnRef = useRef(null);
+  const formCardRef = useRef(null);
+  const faqRef = useRef(null);
   const messageTextareaRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Staggered reveal of info cards
+      if (cardsColumnRef.current) {
+        gsap.fromTo(
+          cardsColumnRef.current.children,
+          { opacity: 0, x: -50 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1.0,
+            stagger: 0.15,
+            delay: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: contactSectionRef.current,
+              start: 'top 75%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      }
+
+      // Form card reveal
+      if (formCardRef.current) {
+        gsap.fromTo(
+          formCardRef.current,
+          { opacity: 0, x: 50, scale: 0.97 },
+          {
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            duration: 1.1,
+            delay: 0.25,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: contactSectionRef.current,
+              start: 'top 75%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      }
+
+      // FAQ accordion reveal
+      if (faqRef.current) {
+        gsap.fromTo(
+          faqRef.current,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.0,
+            delay: 0.3,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: faqRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      }
+    }, contactSectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +113,7 @@ export const Contact = () => {
   };
 
   return (
-    <section className="contact" id="contact">
+    <section className="contact" id="contact" ref={contactSectionRef}>
       <div className="heading-container">
         <span className="heading-subtitle">
           <Sparkles size={14} /> Atención Personalizada
@@ -48,7 +124,7 @@ export const Contact = () => {
       </div>
 
       <div className="contact-grid">
-        <div className="contact-cards-column">
+        <div className="contact-cards-column" ref={cardsColumnRef}>
           <div className="info-card glass-card">
             <div className="info-icon"><MapPin size={22} /></div>
             <div>
@@ -83,7 +159,7 @@ export const Contact = () => {
           </div>
         </div>
 
-        <div className="contact-form-card glass-card">
+        <div className="contact-form-card glass-card" ref={formCardRef}>
           {submitted ? (
             <div className="form-success-box animate-fade-in">
               <CheckCircle size={64} className="success-icon" />
@@ -149,7 +225,7 @@ export const Contact = () => {
       </div>
 
       {/* Accordion FAQ Section */}
-      <div className="faq-section">
+      <div className="faq-section" ref={faqRef}>
         <h3 className="faq-title">Preguntas Frecuentes</h3>
         <div className="faq-accordion-grid">
           {FAQS_DATA.map((faq, idx) => (
