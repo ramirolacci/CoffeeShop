@@ -1,0 +1,43 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+}
+
+main {
+  flex: 1;
+}
+
+.toast-notification {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  background: rgba(18, 18, 23, 0.95);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--main-color);
+  padding: 1.4rem 2.2rem;
+  border-radius: var(--radius-md);
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), var(--gold-glow);
+  z-index: 3000;
+  backdrop-filter: blur(12px);
+}
+
+.toast-icon {
+  color: var(--main-color);
+}
+
+@media (max-width: 640px) {
+  .toast-notification {
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+    justify-content: center;
+  }
+}
