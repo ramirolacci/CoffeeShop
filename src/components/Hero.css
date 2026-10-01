@@ -120,20 +120,20 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1.4rem;
-  background: rgba(18, 18, 26, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border-gold);
   border-radius: var(--radius-md);
   text-align: left;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
   transition: all var(--transition-normal);
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9), 0 0 25px rgba(228, 179, 129, 0.25);
+  background: rgba(228, 179, 129, 0.12);
   border-color: var(--accent-gold);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(228, 179, 129, 0.2);
 }
 
 .stat-icon-wrapper {
