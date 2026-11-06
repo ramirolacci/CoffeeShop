@@ -68,6 +68,54 @@
 
 ---
 
+## 🚀 Instalación y Puesta en Marcha
+
+Sigue estos sencillos pasos para clonar y ejecutar el proyecto en tu entorno local:
+
+### 📋 Requisitos Previos
+
+Asegúrate de tener instalado:
+* [Node.js](https://nodejs.org/) (versión 18 o superior recomendada)
+* [pnpm](https://pnpm.io/) o [npm](https://www.npmjs.com/)
+
+### 🔧 Pasos de Instalación
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/tu-usuario/coffeeshop.git
+   cd coffeeshop
+   ```
+
+2. **Instalar dependencias:**
+   ```bash
+   # Con pnpm (recomendado)
+   pnpm install
+
+   # O con npm
+   npm install
+   ```
+
+3. **Iniciar el servidor de desarrollo:**
+   ```bash
+   # Con pnpm
+   pnpm dev
+
+   # O con npm
+   npm run dev
+   ```
+   Abre [http://localhost:5173](http://localhost:5173) en tu navegador para ver la aplicación.
+
+### 📜 Scripts Disponibles
+
+| Comando | Descripción |
+| :--- | :--- |
+| `pnpm dev` / `npm run dev` | Inicia el servidor de desarrollo con Hot Reload |
+| `pnpm build` / `npm run build` | Compila y optimiza el proyecto para producción |
+| `pnpm preview` / `npm run preview` | Previsualiza localmente el build de producción |
+| `pnpm lint` / `npm run lint` | Ejecuta el linter (Oxlint) para análisis de código |
+
+---
+
 <div align="center">
   <sub>Desarrollado con pasión por <a href="https://waveframe.com.ar/" target="_blank"><b>WaveFrame Studio</b></a> • © 2026 CoffeeSHOP</sub>
 </div>
